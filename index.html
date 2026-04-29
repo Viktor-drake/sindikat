@@ -152,8 +152,8 @@
       </p>
     </div>
   </div>
-  <div class="lg:col-span-7 relative aspect-square lg:aspect-video rounded-xl bg-surface-container-lowest overflow-hidden shadow-inner order-1 lg:order-2">
-    <img alt="Syndicate Graph Visualization" class="w-full h-full object-cover rounded-xl shadow-2xl shadow-primary/10 border border-outline-variant/20 hover:border-primary/40 transition-colors duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uiBYF3pAIIcdDJGRp5vW6UJG1LfT90-yQ_tZgmlwUdlgI2HI3ishQH-8SuOCorPm5FFL1F4CuC_AAWbHcp2cQTADGpgOxE1MbunhBgfvscMoT9fAqj-tQXDBvwly-FQ0lHhIs7F1iGVIufoeUpVoxPOqrbx5svU-Uohc4ykGUPFdMWfbrilvzRMb5exUnXGvLJFjxZi-4qJEU_kEhTkf0Sis2O_MHQKdmBMr_A2GkPj-F3PXbJhIOzRKDbXiBMI9MbTkuHdxfEkgw"/>
+  <div class="lg:col-span-7 relative aspect-square lg:aspect-video rounded-xl bg-surface-container-lowest overflow-hidden shadow-inner order-1 lg:order-2 border border-outline-variant/20">
+    <canvas id="syndicate-graph" style="width:100%;height:100%;display:block;"></canvas>
     <div class="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10 pointer-events-none"></div>
   </div>
 </section>
@@ -259,7 +259,7 @@
     <!-- Nova photo + info -->
     <div class="flex flex-col items-center gap-6 mb-14">
       <div class="relative">
-        <div class="w-40 h-40 rounded-full overflow-hidden nova-ring border border-primary/20 bg-surface-container-high">
+        <div class="w-64 h-64 rounded-full overflow-hidden nova-ring border border-primary/20 bg-surface-container-high">
           <img
             src="nova.png"
             alt="Нова — AI-ассистент Синдиката"
@@ -322,5 +322,144 @@
   </div>
 </footer>
 
+<script>
+(function() {
+  const canvas = document.getElementById('syndicate-graph');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth * devicePixelRatio;
+    canvas.height = canvas.offsetHeight * devicePixelRatio;
+    ctx.scale(devicePixelRatio, devicePixelRatio);
+  }
+  resize();
+  window.addEventListener('resize', () => { resize(); });
+
+  const W = () => canvas.offsetWidth;
+  const H = () => canvas.offsetHeight;
+
+  // Nodes
+  const labels = ['Marcus','Dolores','Synergy','Capital','Access','Network','AI','Data','Ops','Growth','Tech','Media'];
+  const nodes = labels.map((label, i) => ({
+    id: i,
+    label,
+    x: W() * 0.1 + Math.random() * W() * 0.8,
+    y: H() * 0.1 + Math.random() * H() * 0.8,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: i < 2 ? 10 : 5 + Math.random() * 5,
+    alpha: 0.6 + Math.random() * 0.4,
+  }));
+
+  // Edges
+  const edges = [];
+  nodes.forEach((n, i) => {
+    const count = 2 + Math.floor(Math.random() * 3);
+    for (let k = 0; k < count; k++) {
+      const j = Math.floor(Math.random() * nodes.length);
+      if (j !== i) edges.push([i, j]);
+    }
+  });
+
+  // Force simulation
+  function tick() {
+    const w = W(), h = H();
+    nodes.forEach(n => {
+      // repulsion
+      nodes.forEach(m => {
+        if (m === n) return;
+        const dx = n.x - m.x, dy = n.y - m.y;
+        const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+        const force = 800 / (dist * dist);
+        n.vx += (dx / dist) * force * 0.01;
+        n.vy += (dy / dist) * force * 0.01;
+      });
+      // center gravity
+      n.vx += (w * 0.5 - n.x) * 0.0008;
+      n.vy += (h * 0.5 - n.y) * 0.0008;
+    });
+    // spring edges
+    edges.forEach(([i, j]) => {
+      const a = nodes[i], b = nodes[j];
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+      const target = 100 + Math.random() * 40;
+      const force = (dist - target) * 0.002;
+      const fx = (dx / dist) * force, fy = (dy / dist) * force;
+      a.vx += fx; a.vy += fy;
+      b.vx -= fx; b.vy -= fy;
+    });
+    // integrate + dampen
+    nodes.forEach(n => {
+      n.vx *= 0.92; n.vy *= 0.92;
+      n.x += n.vx; n.y += n.vy;
+      n.x = Math.max(n.r + 10, Math.min(w - n.r - 10, n.x));
+      n.y = Math.max(n.r + 10, Math.min(h - n.r - 10, n.y));
+    });
+  }
+
+  // Hover
+  let hovered = null;
+  canvas.addEventListener('mousemove', e => {
+    const rect = canvas.getBoundingClientRect();
+    const mx = e.clientX - rect.left, my = e.clientY - rect.top;
+    hovered = nodes.find(n => Math.hypot(n.x - mx, n.y - my) < n.r + 6) || null;
+    canvas.style.cursor = hovered ? 'pointer' : 'default';
+  });
+  canvas.addEventListener('mouseleave', () => { hovered = null; });
+
+  let frame = 0;
+  function draw() {
+    const w = W(), h = H();
+    ctx.clearRect(0, 0, w, h);
+    tick();
+
+    // edges
+    edges.forEach(([i, j]) => {
+      const a = nodes[i], b = nodes[j];
+      const isHov = hovered && (hovered.id === i || hovered.id === j);
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = isHov ? 'rgba(255,183,121,0.35)' : 'rgba(255,183,121,0.08)';
+      ctx.lineWidth = isHov ? 1 : 0.5;
+      ctx.stroke();
+    });
+
+    // nodes
+    nodes.forEach(n => {
+      const isHov = hovered && hovered.id === n.id;
+      // glow
+      if (isHov || n.r > 8) {
+        const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3);
+        g.addColorStop(0, 'rgba(255,183,121,0.18)');
+        g.addColorStop(1, 'rgba(255,183,121,0)');
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = g;
+        ctx.fill();
+      }
+      // circle
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, isHov ? n.r + 2 : n.r, 0, Math.PI * 2);
+      ctx.fillStyle = n.r > 8 ? `rgba(255,183,121,${n.alpha})` : `rgba(226,194,140,${n.alpha * 0.7})`;
+      ctx.fill();
+
+      // label
+      if (isHov || n.r > 8) {
+        ctx.fillStyle = isHov ? 'rgba(255,183,121,1)' : 'rgba(211,196,175,0.7)';
+        ctx.font = `${isHov ? 600 : 400} ${isHov ? 11 : 9}px Inter, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.fillText(n.label, n.x, n.y - n.r - 5);
+      }
+    });
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
 </body>
 </html>
