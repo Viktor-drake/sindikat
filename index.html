@@ -172,7 +172,7 @@
         </div>
         <h3 class="text-xl font-bold mb-4">Разговор с Новой</h3>
         <p class="text-on-surface-variant font-light leading-relaxed">
-          Нова — AI-ассистент Синдиката. Она задаст все необходимые вопросы и сформирует вашу карточку участника. 7–10 минут, только факты.
+          Нова — AI-ассистент Синдиката. Она задаст все вопросы и сформирует вашу карточку участника. 20–30 минут глубокой работы — чем честнее ответы, тем точнее мэтчи.
         </p>
       </div>
       <div class="group p-10 bg-surface-container-highest/30 rounded-xl hover:bg-surface-container-highest transition-all duration-500 flex flex-col items-center text-center border-y md:border-y-0 md:border-x border-outline-variant/10">
@@ -209,37 +209,74 @@
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
     <div class="glass-card p-8 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-all group">
       <span class="material-symbols-outlined text-4xl text-primary/60 group-hover:text-primary mb-6 block transition-colors">precision_manufacturing</span>
-      <h4 class="text-lg font-bold mb-2">Automation</h4>
-      <p class="text-sm text-on-surface-variant font-light">Сценарии автоматизации операционных процессов и масштабирования.</p>
+      <h4 class="text-lg font-bold mb-2">Автоматизация</h4>
+      <p class="text-sm text-on-surface-variant font-light">Участники делятся рабочими связками и сценариями автоматизации своих процессов.</p>
     </div>
     <div class="glass-card p-8 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-all group">
       <span class="material-symbols-outlined text-4xl text-primary/60 group-hover:text-primary mb-6 block transition-colors">analytics</span>
-      <h4 class="text-lg font-bold mb-2">AI-analytics</h4>
-      <p class="text-sm text-on-surface-variant font-light">Инструменты интеграции LLM в бизнес-аналитику и принятие решений.</p>
+      <h4 class="text-lg font-bold mb-2">ИИ-аналитика</h4>
+      <p class="text-sm text-on-surface-variant font-light">Реальные кейсы внедрения языковых моделей в принятие решений и аналитику.</p>
     </div>
     <div class="glass-card p-8 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-all group">
       <span class="material-symbols-outlined text-4xl text-primary/60 group-hover:text-primary mb-6 block transition-colors">trending_up</span>
-      <h4 class="text-lg font-bold mb-2">Sales & Marketing</h4>
-      <p class="text-sm text-on-surface-variant font-light">Стратегии захвата рынков и архитектура воронок продаж нового типа.</p>
+      <h4 class="text-lg font-bold mb-2">Продажи и рост</h4>
+      <p class="text-sm text-on-surface-variant font-light">Стратегии привлечения клиентов и воронки, которые работают прямо сейчас.</p>
     </div>
     <div class="glass-card p-8 rounded-lg border border-outline-variant/10 hover:border-primary/30 transition-all group">
       <span class="material-symbols-outlined text-4xl text-primary/60 group-hover:text-primary mb-6 block transition-colors">factory</span>
-      <h4 class="text-lg font-bold mb-2">Industry Impl</h4>
-      <p class="text-sm text-on-surface-variant font-light">Реальные отраслевые внедрения: от агросектора до финтеха.</p>
+      <h4 class="text-lg font-bold mb-2">Отраслевые кейсы</h4>
+      <p class="text-sm text-on-surface-variant font-light">Опыт участников из разных ниш: от e-commerce и финтеха до производства.</p>
     </div>
   </div>
 </section>
 
-<!-- Quote Section -->
-<section class="py-40 relative">
-  <div class="absolute inset-0 bg-surface-container-lowest opacity-50"></div>
-  <div class="max-w-4xl mx-auto px-8 relative z-10 text-center">
-    <div class="w-20 h-[2px] bg-primary/40 mx-auto mb-12"></div>
-    <blockquote class="text-xl sm:text-3xl md:text-5xl font-headline font-extralight italic leading-tight text-on-surface">
-      «Самые ценные знакомства — это не те, которые ты ищешь. Это те, которые происходят, когда правильный человек видит правильный контекст.»
-    </blockquote>
-    <div class="mt-12 text-primary font-label text-xs tracking-[0.4em] uppercase opacity-60">
-      Architect of Syndicate
+<!-- Founder Section -->
+<section class="py-24 sm:py-36 px-4 sm:px-8 relative" style="background:radial-gradient(ellipse 700px 500px at 30% 50%, rgba(255,183,121,0.04) 0%, transparent 70%);">
+  <div class="max-w-[1100px] mx-auto">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+
+      <!-- Фото -->
+      <div class="lg:col-span-4 flex justify-center">
+        <div style="position:relative;">
+          <div style="width:300px;height:380px;border-radius:16px;overflow:hidden;border:1px solid rgba(255,183,121,0.2);box-shadow:0 0 60px rgba(255,183,121,0.06);background:#0a0e14;">
+            <img src="viktor.jpg" alt="Виктор Дачников — основатель Синдиката"
+              style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;"
+              onerror="this.style.display='none';">
+          </div>
+          <div style="position:absolute;inset:-6px;border:1px solid rgba(255,183,121,0.07);border-radius:20px;pointer-events:none;"></div>
+        </div>
+      </div>
+
+      <!-- Текст + цитата -->
+      <div class="lg:col-span-8 flex flex-col gap-8">
+        <div>
+          <p class="text-primary font-label text-xs tracking-[0.3em] uppercase mb-4">Основатель</p>
+          <h2 class="text-3xl sm:text-5xl font-headline font-bold text-on-surface mb-2">Виктор Дачников</h2>
+          <p class="text-on-surface-variant text-base font-light">Предприниматель · Architect of Syndicate</p>
+        </div>
+
+        <div style="border-left:2px solid rgba(255,183,121,0.3);padding-left:24px;">
+          <blockquote class="text-xl sm:text-2xl font-headline font-extralight italic leading-relaxed text-on-surface">
+            «Самые ценные знакомства — это не те, которые ты ищешь. Это те, которые происходят, когда правильный человек видит правильный контекст.»
+          </blockquote>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,183,121,0.5);flex-shrink:0;"></div>
+            <p class="text-sm text-on-surface-variant font-light">Строю предпринимательские сети с 2018 года</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,183,121,0.5);flex-shrink:0;"></div>
+            <p class="text-sm text-on-surface-variant font-light">Внедряю ИИ в бизнес-процессы с 2022 года</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div style="width:4px;height:4px;border-radius:50%;background:rgba(255,183,121,0.5);flex-shrink:0;"></div>
+            <p class="text-sm text-on-surface-variant font-light">Синдикат — реальные сделки, партнёрства и синергии между участниками</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
